@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>شات الموقع</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .chat-header {
+      background-color: #343541;
+      color: white;
+      padding: 15px;
+      font-size: 18px;
+      text-align: center;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #e4e6eb;
+    }
+    .message-block {
+      margin-bottom: 12px;
+    }
+    .user-label {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 3px;
+    }
+    .message {
+      background-color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      max-width: 75%;
+      line-height: 1.6;
+      word-wrap: break-word;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .user-message { align-self: flex-end; background-color: #d1e7dd; }
+    .admin-message { border-right: 4px solid #ffc107; }
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      background-color: white;
+      border-top: 1px solid #ccc;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-right: 10px;
+    }
+    .chat-input button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #343541;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .emoji-bar {
+      padding: 5px 10px;
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+      text-align: center;
+    }
+    .emoji-bar span {
+      cursor: pointer;
+      font-size: 20px;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-header">
+    مرحباً 👋 | شات الموقع - صقر العرب اليماني
+  </div>
+
+  <div class="chat-messages" id="chatBox">
+    <!-- الرسائل تظهر هنا -->
+  </div>
+
+  <div class="emoji-bar">
+    <span onclick="addEmoji('😀')">😀</span>
+    <span onclick="addEmoji('❤️')">❤️</span>
+    <span onclick="addEmoji('😂')">😂</span>
+    <span onclick="addEmoji('🔥')">🔥</span>
+    <span onclick="addEmoji('👍')">👍</span>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا..." />
+    <button id="sendBtn">إرسال</button>
+  </div>
+
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/chat.js"></script>
+
+  <script>
+    function addEmoji(emoji) {
+      const input = document.getElementById('messageInput');
+      input.value += emoji;
+      input.focus();
+    }
+  </script>
+</body>
+</html>

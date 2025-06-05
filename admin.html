@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>لوحة تحكم الأدمن</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 30px;
+      direction: rtl;
+    }
+    h2 {
+      text-align: center;
+      color: #343541;
+    }
+    .section {
+      background-color: #fff;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .section h3 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    #adminMessages, #userList {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #fafafa;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      background-color: #343541;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1f1f2e;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>لوحة التحكم - الأدمن</h2>
+
+  <div class="section">
+    <h3>رسائل المستخدمين</h3>
+    <div id="adminMessages"></div>
+  </div>
+
+  <div class="section">
+    <h3>قائمة المستخدمين</h3>
+    <div id="userList"></div>
+  </div>
+
+  <div class="section">
+    <h3>إرسال تنبيه عام</h3>
+    <input id="adminAlert" placeholder="اكتب التنبيه هنا..." type="text"/>
+    <button id="sendAlertBtn">إرسال التنبيه</button>
+  </div>
+
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/admin.js"></script>
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+    import { app } from "./js/firebase-config.js";
+
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userRef = ref(db, `users/${user.uid}`);
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          if (userData.type === "admin") {
+            console.log("✅ تم التحقق من الأدمن");
+          } else {
+            alert("❌ ليس لديك صلاحية الأدمن.");
+            window.location.href = "index.html";
+          }
+        } else {
+          alert("❌ لا توجد بيانات لهذا المستخدم.");
+          window.location.href = "index.html";
+        }
+      } else {
+        alert("❌ يجب تسجيل الدخول أولاً.");
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html>
